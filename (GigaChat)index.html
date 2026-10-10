@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyCodeCamp — Интерактивный Python</title>
+    
+    <!-- Импорт шрифта Nunito, как у FreeCodeCamp -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #0a0f1c;
+            --bg-dark: #1a1f2b;
+            --bg-card: #212936;
+            --text-white: #ffffff;
+            --text-medium: #adb5bd;
+            --accent-green: #00c878;
+            --accent-green-dark: #00a86b;
+            --code-bg: #2d3748;
+            --code-text: #e2e8f0;
+            --container-width: 1100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-white);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === НАВИГАЦИЯ И ХЕДЕР === */
+        .header {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            padding: 1rem 0;
+            border-bottom: 1px solid #4a5568;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-green);
+        }
+
+        .nav a {
+            color: var(--text-medium);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            left: 0;
+            bottom: -5px;
+            background: var(--accent-green);
+            transition: width 0.3s;
+        }
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* === КНОПКИ (ОСНОВНОЙ ДЕКОР) === */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px; /* Максимально скругленные, как на FC */
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-green);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 200, 120, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: var(--accent-green-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 200, 120, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+        }
+        .btn-outline:hover {
+            background-color: var(--accent-green);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* === ГЛАВНЫЙ ЭКРАН === */
+        .hero {
+            background: linear-gradient(135deg, #1a202c 0%, #1a1f2b 100%);
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #6ee7b7, #00c878);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-medium);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* === КАРТОЧКИ КУРСОВ === */
+        .curriculum {
+            padding: 6rem 0;
+            background-color: var(--bg-main);
+        }
+
+        .curriculum h2 {
+            text-align: center;
+            font-size: 2.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background-color: var(--bg-card);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cert-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 200, 120, 0.15);
+        }
+
+        .cert-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-green);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #00c878);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+        }
+
+        /* === БЛОК УПРАЖНЕНИЙ === */
+        .challenge-card {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-card h4 {
+            margin-bottom: 1rem;
+            color: var(--accent-green);
+        }
+
+        .exercise-block {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .exercise-block strong {
+            color: #6ee7b7;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #1e293b;
+            color: var(--code-text);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: "Fira Code", "Courier New", monospace;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+
+        button.check-btn {
+            background-color: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 200, 120, 0.3);
+        }
+        button.check-btn:hover {
+            background-color: #00a86b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 200, 120, 0.4);
+        }
+
+        .output {
+            background-color: #1e293b;
+            color: #6ee7b7;
+            padding: 12px;
+            border-radius: 6px;
+            min-height: 40px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 10px;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        /* === ПОДВАЛ === */
+        .footer {
+            background: linear-gradient(135deg, #0a0f1c 0%, #1a202c 100%);
+            padding: 4rem 0 2rem;
+            color: var(--text-medium);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span>🐍</span> PyCodeCamp
+            </div>
+            <nav class="nav">
+                <a href="#curriculum">Треки</a>
+                <a href="#">Сообщество</a>
+                <a href="#" class="btn btn-outline">Войти</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Интерактивный курс Python</h1>
+                <p>Пишите код прямо в браузере. От переменных до нейросетей. 100% бесплатно, как на freeCodeCamp.</p>
+                <a href="#python-track" class="btn btn-primary btn-large">Начать обучение</a>
+            </div>
+        </section>
+
+        <section id="curriculum" class="curriculum">
+            <div class="container">
+                <h2>Выберите свой путь</h2>
+                <p class="section-subtitle">Каждый путь содержит сотни задач и 5 финальных проектов.</p>
+                
+                <div class="certs-grid">
+                    <div class="cert-card">
+                        <div class="cert-icon">🐍</div>
+                        <h3>Python для анализа данных</h3>
+                        <p>Изучите Pandas, NumPy и визуализацию. С нуля до Junior Data Analyst.</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <span class="progress-text">0% выполнено</span>
+                        <a href="#python-track" class="btn btn-primary btn-block">Начать трек</a>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon">💻</div>
+                        <h3>Алгоритмы и структуры данных</h3>
+                        <p>Подготовка к собеседованиям в FAANG и крупные IT-компании.</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <span class="progress-text">0% выполнено</span>
+                        <a href="#" class="btn btn-outline btn-block">Начать трек</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="python-track" class="track-detail">
+            <div class="container">
+                <h2>Практика: Базовый Python</h2>
+                
+                <div class="challenge-card">
+                    <h4>Задание 1: Приветствие</h4>
+                    <p>Напишите программу, которая запрашивает имя пользователя и выводит "Привет, [Имя]!".</p>
+                    <div class="exercise-block">
+                        <textarea id="code1">name = input("Введите ваше имя: ")
+print("Привет, " + name + "!")</textarea>
+                        <button class="btn btn-primary check-btn" onclick="runCode('1')">Проверить решение</button>
+                        <pre id="output1" class="output"></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-card">
+                    <h4>Задание 2: Математика</h4>
+                    <p>Создайте переменную x = 10. Выведите в консоль результат возведения x в квадрат.</p>
+                    <div class="exercise-block">
+                        <textarea id="code2">x = 10
+print(x ** 2)</textarea>
+                        <button class="btn btn-primary check-btn" onclick="runCode('2')">Проверить решение</button>
+                        <pre id="output2" class="output"></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 PyCodeCamp. Бесплатное образование для всех.</p>
+        </div>
+    </footer>
+
+    <!-- Интерпретатор Python (Pyodide) -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+    <script>
+        let pyodide = null;
+        let progress = 0;
+
+        async function loadPyodide() {
+            if (pyodide) return;
+            pyodide = await loadPyodideFromCDN();
+            pyodide.setStdout({ batched: (msg) => updateOutput('last', msg) });
+            pyodide.setStderr({ batched: (msg) => updateOutput('last', `Ошибка: ${msg}`) });
+        }
+
+        async function runCode(id) {
+            await loadPyodide();
+            const code = document.getElementById(`code${id}`).value;
+            const output = document.getElementById(`output${id}`);
+            output.textContent = "Выполнение...";
+
+            try {
+                const result = await pyodide.runPythonAsync(code);
+                if (result !== undefined) {
+                    output.textContent = `Результат:\n${result}`;
+                } else {
+                    output.textContent = "Код выполнен без вывода.";
+                }
+                
+                // Визуальное обновление прогресса (имитация)
+                progress += 25;
+                if (progress > 100) progress = 100;
+                document.querySelector('.progress-fill').style.width = progress + '%';
+                document.querySelector('.progress-text').textContent = progress + '% выполнено';
+
+            } catch (err) {
+                output.textContent = `Ошибка:\n${err}`;
+            }
+        }
+
+        function updateOutput(id, message) {
+            const output = document.getElementById(`output${id}`);
+            if (output) {
+                output.textContent += message + "\n";
+            }
+        }
+    </script>
+</body>
+</html>
